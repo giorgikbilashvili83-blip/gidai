@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Javakheti Explore — Discover Samtskhe-Javakheti</title>
+  <meta name="description" content="Interactive platform for high school students to discover places, connect, and share experiences in Samtskhe-Javakheti, Georgia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Navigation -->
+    <header class="header">
+      <div class="header__brand">
+        <div class="header__logo">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 6v20M6 16h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="16" cy="16" r="4" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <span class="header__title">Javakheti Explore</span>
+          <span class="header__subtitle">სამცხე-ჯავახეთი</span>
+        </div>
+      </div>
+
+      <nav class="header__nav" aria-label="Main navigation">
+        <button class="nav-btn nav-btn--active" data-view="map">Map</button>
+        <button class="nav-btn" data-view="feed">Feed</button>
+        <button class="nav-btn" data-view="connect">Connect</button>
+      </nav>
+
+      <div class="header__actions">
+        <button class="icon-btn" id="searchToggle" aria-label="Search places">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <button class="btn btn--primary btn--sm" id="shareExperienceBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Share
+        </button>
+        <div class="avatar" aria-hidden="true">G</div>
+      </div>
+    </header>
+
+    <!-- Search overlay -->
+    <div class="search-bar" id="searchBar" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="searchInput" placeholder="Search places in Samtskhe-Javakheti..." autocomplete="off" />
+      <button class="icon-btn icon-btn--ghost" id="searchClose" aria-label="Close search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Main content -->
+    <main class="main">
+      <!-- Map View -->
+      <section class="view view--active" id="mapView">
+        <aside class="sidebar">
+          <div class="sidebar__header">
+            <h1>Discover Your Region</h1>
+            <p>Explore nature spots, hangouts, and hidden gems across Samtskhe-Javakheti — built for students like you.</p>
+          </div>
+
+          <div class="filters">
+            <button class="filter-chip filter-chip--active" data-category="all">
+              <span class="filter-chip__dot filter-chip__dot--all"></span>
+              All
+            </button>
+            <button class="filter-chip" data-category="nature">
+              <span class="filter-chip__dot filter-chip__dot--nature"></span>
+              Nature
+            </button>
+            <button class="filter-chip" data-category="entertainment">
+              <span class="filter-chip__dot filter-chip__dot--entertainment"></span>
+              Entertainment
+            </button>
+            <button class="filter-chip" data-category="culture">
+              <span class="filter-chip__dot filter-chip__dot--culture"></span>
+              Culture
+            </button>
+            <button class="filter-chip" data-category="food">
+              <span class="filter-chip__dot filter-chip__dot--food"></span>
+              Food & Cafés
+            </button>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat">
+              <span class="stat__value" id="placeCount">12</span>
+              <span class="stat__label">Places</span>
+            </div>
+            <div class="stat">
+              <span class="stat__value">847</span>
+              <span class="stat__label">Students</span>
+            </div>
+            <div class="stat">
+              <span class="stat__value">156</span>
+              <span class="stat__label">Stories</span>
+            </div>
+          </div>
+
+          <div class="places-list" id="placesList" role="list"></div>
+        </aside>
+
+        <div class="map-container">
+          <div id="map" role="application" aria-label="Interactive map of Samtskhe-Javakheti"></div>
+
+          <div class="map-controls">
+            <button class="map-control-btn" id="locateBtn" title="Center on region">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+            </button>
+            <button class="map-control-btn" id="layersBtn" title="Toggle map style">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </button>
+          </div>
+
+          <div class="map-legend">
+            <span class="map-legend__title">Legend</span>
+            <div class="map-legend__items">
+              <span><i class="legend-dot legend-dot--nature"></i> Nature</span>
+              <span><i class="legend-dot legend-dot--entertainment"></i> Fun</span>
+              <span><i class="legend-dot legend-dot--culture"></i> Culture</span>
+              <span><i class="legend-dot legend-dot--food"></i> Food</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feed View -->
+      <section class="view" id="feedView" hidden>
+        <div class="feed">
+          <div class="feed__header">
+            <h1>Community Feed</h1>
+            <p>See what students are discovering and sharing across the region.</p>
+          </div>
+          <div class="feed__grid" id="feedGrid"></div>
+        </div>
+      </section>
+
+      <!-- Connect View -->
+      <section class="view" id="connectView" hidden>
+        <div class="connect">
+          <div class="connect__header">
+            <h1>Find Your Crew</h1>
+            <p>Connect with students who share your interests and plan adventures together.</p>
+          </div>
+          <div class="connect__grid" id="connectGrid"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Place detail panel -->
+    <aside class="detail-panel" id="detailPanel" aria-hidden="true">
+      <button class="detail-panel__close" id="detailClose" aria-label="Close details">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="detail-panel__content" id="detailContent"></div>
+    </aside>
+    <div class="overlay" id="overlay" hidden></div>
+
+    <!-- Share modal -->
+    <dialog class="modal" id="shareModal">
+      <div class="modal__header">
+        <h2>Share Your Experience</h2>
+        <button class="icon-btn icon-btn--ghost modal__close" id="shareModalClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <form class="modal__form" id="shareForm">
+        <label>
+          Where did you go?
+          <select id="sharePlace" required></select>
+        </label>
+        <label>
+          Your story
+          <textarea id="shareStory" rows="4" placeholder="Tell others what made this place special..." required></textarea>
+        </label>
+        <label>
+          Rating
+          <div class="rating-input" id="ratingInput">
+            <button type="button" class="star" data-rating="1">★</button>
+            <button type="button" class="star" data-rating="2">★</button>
+            <button type="button" class="star" data-rating="3">★</button>
+            <button type="button" class="star" data-rating="4">★</button>
+            <button type="button" class="star" data-rating="5">★</button>
+          </div>
+        </label>
+        <button type="submit" class="btn btn--primary btn--full">Post to Feed</button>
+      </form>
+    </dialog>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
