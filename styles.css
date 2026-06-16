@@ -1582,9 +1582,19 @@ body::before {
   }
 
   .header__nav {
+    display: flex;
+  }
+  .nav-btn{
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+  }
+    .header__subtitle {
     display: none;
   }
-
+  .header__title{
+    display: none;
+  }
   .feed, .connect {
     padding: 24px 16px 88px;
   }
@@ -1610,7 +1620,12 @@ body::before {
     justify-content: center;
     font-size: 0;
   }
-
+  .header__nav {
+    display: flex;
+  }
+  .header__title{
+    display: none;
+  }
   .stats-row {
     display: none;
   }
