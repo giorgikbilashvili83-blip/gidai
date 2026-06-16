@@ -14,7 +14,7 @@ const PLACES = [
     rating: 4.8,
     reviews: 234,
     emoji: '🏰',
-    image: 'https://images.unsplash.com/photo-1596484552834-027a4ed11cee?w=600&h=400&fit=crop',
+    image: '/images/rabati.jpg',
     description: 'A stunning restored fortress blending Georgian, Ottoman, and European architecture. Perfect for history lovers and Instagram-worthy photos with friends.',
     tags: ['History', 'Photography', 'Free for students'],
     tips: [
@@ -74,7 +74,7 @@ const PLACES = [
     rating: 4.6,
     reviews: 156,
     emoji: '⛷️',
-    image: 'https://images.unsplash.com/photo-1551524164-687aa55cfea0?w=600&h=400&fit=crop',
+    image: '/images/bakuriani.webp',
     description: 'Georgia\'s favorite winter destination — skiing, snowboarding, and cozy cafés. In summer, enjoy hiking trails and fresh mountain air.',
     tags: ['Skiing', 'Winter sports', 'Mountain air'],
     tips: [
@@ -134,7 +134,7 @@ const PLACES = [
     rating: 4.6,
     reviews: 112,
     emoji: '🛡️',
-    image: 'https://images.unsplash.com/photo-1539650116574-75c0c5705584?w=600&h=400&fit=crop',
+    image: '/images/khertvisi.jpg',
     description: 'One of the oldest fortresses in Georgia, towering over the Mtkvari River canyon. Combine with Vardzia for an epic day of exploration.',
     tags: ['Ancient', 'Canyon views', 'Free entry'],
     tips: [
@@ -154,7 +154,7 @@ const PLACES = [
     rating: 4.2,
     reviews: 64,
     emoji: '🛹',
-    image: 'https://images.unsplash.com/photo-1574629810360-7aec2a47d865?w=600&h=400&fit=crop',
+    image: '/images/axalcixis-parki.jpg',
     description: 'The go-to hangout spot in Akhaltsikhe — basketball courts, skate areas, benches, and plenty of space to chill with friends after school.',
     tags: ['Skateboarding', 'Basketball', 'Hangout'],
     tips: [
@@ -344,6 +344,61 @@ let activePlaceId = null;
 let selectedRating = 0;
 let isDarkMap = true;
 let userFeedPosts = [];
+let isMobileMapOpen = false;
+
+// ============================================
+// Mobile Map
+// ============================================
+
+function isMobile() {
+  return window.matchMedia('(max-width: 900px)').matches;
+}
+
+function openMobileMap() {
+  if (!isMobile()) return;
+
+  isMobileMapOpen = true;
+  const container = document.querySelector('.map-container');
+  const toggle = document.getElementById('mobileMapToggle');
+
+  container.classList.add('map-container--visible');
+  toggle.classList.add('mobile-map-toggle--map-open');
+  toggle.setAttribute('aria-expanded', 'true');
+
+  setTimeout(() => {
+    if (map) {
+      map.invalidateSize();
+      map.setView(REGION_CENTER, REGION_ZOOM);
+    }
+  }, 400);
+}
+
+function closeMobileMap() {
+  isMobileMapOpen = false;
+  const container = document.querySelector('.map-container');
+  const toggle = document.getElementById('mobileMapToggle');
+
+  if (container) container.classList.remove('map-container--visible');
+  if (toggle) {
+    toggle.classList.remove('mobile-map-toggle--map-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function toggleMobileMap() {
+  if (isMobileMapOpen) {
+    closeMobileMap();
+  } else {
+    openMobileMap();
+  }
+}
+
+function handleViewportChange() {
+  if (!isMobile()) {
+    closeMobileMap();
+    document.querySelector('.map-container')?.classList.remove('map-container--visible');
+  }
+}
 
 // ============================================
 // Map
@@ -605,8 +660,10 @@ function handleSearch(query) {
 // ============================================
 
 function switchView(view) {
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.classList.toggle('nav-btn--active', btn.dataset.view === view);
+  document.querySelectorAll('.nav-btn, .mobile-nav__btn').forEach(btn => {
+    const isActive = btn.dataset.view === view;
+    btn.classList.toggle('nav-btn--active', isActive);
+    btn.classList.toggle('mobile-nav__btn--active', isActive);
   });
 
   document.querySelectorAll('.view').forEach(v => {
@@ -618,8 +675,14 @@ function switchView(view) {
   target.classList.add('view--active');
   target.hidden = false;
 
+  if (view !== 'map') {
+    closeMobileMap();
+  }
+
   if (view === 'map') {
-    setTimeout(() => map.invalidateSize(), 300);
+    setTimeout(() => {
+      if (map) map.invalidateSize();
+    }, 300);
   }
 }
 
@@ -754,9 +817,14 @@ function showToast(message) {
 // ============================================
 
 function initEvents() {
-  document.querySelectorAll('.nav-btn').forEach(btn => {
+  document.querySelectorAll('.nav-btn, .mobile-nav__btn').forEach(btn => {
     btn.addEventListener('click', () => switchView(btn.dataset.view));
   });
+
+  document.getElementById('mobileMapToggle').addEventListener('click', openMobileMap);
+  document.getElementById('mobileMapClose').addEventListener('click', closeMobileMap);
+
+  window.addEventListener('resize', handleViewportChange);
 
   document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', () => filterByCategory(chip.dataset.category));
