@@ -14,7 +14,7 @@ const PLACES = [
     rating: 4.8,
     reviews: 234,
     emoji: '🏰',
-    image: '/images/rabati.jpg',
+    image: 'rabati.jpg',
     description: 'A stunning restored fortress blending Georgian, Ottoman, and European architecture. Perfect for history lovers and Instagram-worthy photos with friends.',
     tags: ['History', 'Photography', 'Free for students'],
     tips: [
@@ -74,7 +74,7 @@ const PLACES = [
     rating: 4.6,
     reviews: 156,
     emoji: '⛷️',
-    image: '/images/bakuriani.webp',
+    image: 'bakuriani.webp',
     description: 'Georgia\'s favorite winter destination — skiing, snowboarding, and cozy cafés. In summer, enjoy hiking trails and fresh mountain air.',
     tags: ['Skiing', 'Winter sports', 'Mountain air'],
     tips: [
@@ -134,7 +134,7 @@ const PLACES = [
     rating: 4.6,
     reviews: 112,
     emoji: '🛡️',
-    image: '/images/khertvisi.jpg',
+    image: 'khertvisi.jpg',
     description: 'One of the oldest fortresses in Georgia, towering over the Mtkvari River canyon. Combine with Vardzia for an epic day of exploration.',
     tags: ['Ancient', 'Canyon views', 'Free entry'],
     tips: [
@@ -154,7 +154,7 @@ const PLACES = [
     rating: 4.2,
     reviews: 64,
     emoji: '🛹',
-    image: '/images/axalcixis-parki.jpg',
+    image: 'axalcixis-parki.jpg',
     description: 'The go-to hangout spot in Akhaltsikhe — basketball courts, skate areas, benches, and plenty of space to chill with friends after school.',
     tags: ['Skateboarding', 'Basketball', 'Hangout'],
     tips: [
