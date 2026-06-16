@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Javakheti Explore — Discover Samtskhe-Javakheti</title>
+  <title>Journey Map</title>
   <meta name="description" content="Interactive platform for high school students to discover places, connect, and share experiences in Samtskhe-Javakheti, Georgia." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,14 +17,15 @@
     <header class="header">
       <div class="header__brand">
         <div class="header__logo">
-          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <!-- <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/>
             <path d="M16 6v20M6 16h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <circle cx="16" cy="16" r="4" fill="currentColor"/>
-          </svg>
+          </svg> -->
+          <img src="/images/logo-transparent.png" alt="logo">
         </div>
         <div>
-          <span class="header__title">Javakheti Explore</span>
+          <span class="header__title">Journey Map</span>
           <span class="header__subtitle">სამცხე-ჯავახეთი</span>
         </div>
       </div>
@@ -128,7 +129,18 @@
               <span><i class="legend-dot legend-dot--food"></i> Food</span>
             </div>
           </div>
+
+          <button class="map-container__close" id="mobileMapClose" aria-label="Close map">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            <span>Close Map</span>
+          </button>
         </div>
+
+        <button class="mobile-map-toggle" id="mobileMapToggle" type="button" aria-expanded="false" aria-controls="map">
+          <svg class="mobile-map-toggle__icon mobile-map-toggle__icon--map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <svg class="mobile-map-toggle__icon mobile-map-toggle__icon--list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" hidden><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          <span class="mobile-map-toggle__label">Show Map</span>
+        </button>
       </section>
 
       <!-- Feed View -->
@@ -196,6 +208,22 @@
 
     <!-- Toast -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Mobile bottom navigation -->
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      <button class="mobile-nav__btn mobile-nav__btn--active" data-view="map">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Explore</span>
+      </button>
+      <button class="mobile-nav__btn" data-view="feed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>Feed</span>
+      </button>
+      <button class="mobile-nav__btn" data-view="connect">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Connect</span>
+      </button>
+    </nav>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
