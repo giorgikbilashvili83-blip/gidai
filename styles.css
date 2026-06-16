@@ -1623,6 +1623,11 @@ body::before {
   .header__nav {
     display: flex;
   }
+     .nav-btn{
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+  }
   .header__title{
     display: none;
   }
