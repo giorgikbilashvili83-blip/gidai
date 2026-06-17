@@ -177,9 +177,9 @@ body::before {
 .header__actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
 }
-
 .avatar {
   width: 36px;
   height: 36px;
@@ -767,6 +767,7 @@ body::before {
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
+  z-index: 2000;
 }
 
 .detail-panel--open {
@@ -1574,7 +1575,7 @@ body::before {
     border-left: none;
     border-top: 1px solid var(--color-border);
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    transform: translateY(100%);
+    transform: translateY(150%);
   }
 
   .detail-panel--open {
@@ -1582,18 +1583,14 @@ body::before {
   }
 
   .header__nav {
-    display: flex;
+    display: none;
   }
-  .nav-btn{
-    display: flex;
-    gap: 4px;
-    padding: 4px;
-  }
+
     .header__subtitle {
     display: none;
   }
   .header__title{
-    display: none;
+    display: block;
   }
   .feed, .connect {
     padding: 24px 16px 88px;
@@ -1614,22 +1611,15 @@ body::before {
   }
 
   .header__actions #shareExperienceBtn {
-    width: 36px;
-    min-width: 36px;
-    padding: 0;
+    display: flex;
+    padding: 12px 8px 12px 14px;
+    align-items: center;
     justify-content: center;
     font-size: 0;
   }
-  .header__nav {
-    display: flex;
-  }
-     .nav-btn{
-    display: flex;
-    gap: 4px;
-    padding: 4px;
-  }
+
   .header__title{
-    display: none;
+    display: block;
   }
   .stats-row {
     display: none;
